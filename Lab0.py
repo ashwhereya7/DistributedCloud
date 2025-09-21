@@ -1,7 +1,6 @@
-# /mnt/data/caesar_variation.py
-# Caesar Cipher variation: byte-wise addition with repeating key, modulo 255.
-MOD = 255
 
+# Interactive Caesar Cipher variation: add plaintext byte to key byte (repeating key) mod 255.
+MOD = 255
 
 def _cycle_key(key: str, length: int) -> str:
     if not key:
@@ -10,9 +9,11 @@ def _cycle_key(key: str, length: int) -> str:
     return key * reps + key[:rem]
 
 def encrypt_ascii_codes(message: str, key: str):
-    # return list of cipher byte values (0..254) via (m+k) % 255
     k = _cycle_key(key, len(message))
     return [(ord(m) + ord(kc)) % MOD for m, kc in zip(message, k)]
+
+def to_signed8(v: int) -> int:
+    return v if v < 128 else v - 256
 
 def decrypt_from_codes(codes, key: str) -> str:
     k = _cycle_key(key, len(codes))
@@ -20,26 +21,20 @@ def decrypt_from_codes(codes, key: str) -> str:
     return ''.join(chr(v) for v in vals)
 
 def codes_to_text(codes) -> str:
-    # displayable 1:1 mapping for all byte values
     return bytes(codes).decode('latin-1', errors='replace')
 
-def run_case(message: str, key: str):
-    codes = encrypt_ascii_codes(message, key)
-    return codes_to_text(codes), '-'.join(map(str, codes)), decrypt_from_codes(codes, key)
-
 def main():
-    cases = [
-        ("UTSA, Birds up!", "NPB"),
-        ("Being a hacker is fun", "But risky"),
-        ("True", "Today is a happy day"),
-    ]
-    for i, (msg, key) in enumerate(cases, 1):
-        ct, codes, pt = run_case(msg, key)
-        print(f"Case {i}\nMessage: {msg}\nKey: {key}")
-        print(f"Encrypted message: {codes}")
-        print(f"Encrypted string: {ct}")
-        print(f"Decrypted string: {pt}")
-        print("-"*60)
+    try:
+        message = input("Enter your message: ")
+        key = input("Enter your key: ")
+        codes = encrypt_ascii_codes(message, key)
+        #signed = [to_signed8(v) for v in codes]
+        #print("\nEncrypted message:" + "-".join(str(x) for x in signed))
+        print("\nEncrypted message:" + "-" + "-".join(str(x) for x in codes))
+        print("\nEncrypted string: " + codes_to_text(codes))
+        print("\nDecrypted string: " + decrypt_from_codes(codes, key))
+    except Exception as e:
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
     main()
