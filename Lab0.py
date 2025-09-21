@@ -1,5 +1,10 @@
+# Author: Aishwarya Patel
+# Date: September 21, 2025
+# Course: CS 4663-901 Distributed and Cloud Systems Security
+# Project: Lab 0 - Simple Interactive Caesar Cipher Variant
+# Description: Simple interactive Caesar cipher variant
+# to add plaintext byte to key byte (repeating key) mod 255.
 
-# Interactive Caesar Cipher variation: add plaintext byte to key byte (repeating key) mod 255.
 MOD = 255
 
 def _cycle_key(key: str, length: int) -> str:
