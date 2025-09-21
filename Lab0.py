@@ -2,6 +2,7 @@
 # Caesar Cipher variation: byte-wise addition with repeating key, modulo 255.
 MOD = 255
 
+
 def _cycle_key(key: str, length: int) -> str:
     if not key:
         raise ValueError("Key must be non-empty")
